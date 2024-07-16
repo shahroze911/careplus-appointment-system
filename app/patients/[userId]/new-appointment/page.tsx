@@ -2,16 +2,17 @@ import PatientForm from "@/components/forms/PatientForm";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
-import AppointmentForm from "@/components/forms/AppointmentForm";
+
 import { getPatient } from "@/lib/actions/patient.actions";
 import * as Sentry from "@sentry/nextjs";
+import AppointmentForm from "@/components/forms/AppointmentForm";
 export default async function NewAppointment({
 	params: { userId },
-}: SearchParamProps) {
+	setOpen, // Accept setOpen as a prop if necessary
+}: SearchParamProps & { setOpen: (open: boolean) => void }) {
 	const patient = await getPatient(userId);
-		
 
-		Sentry.metrics.set("user_view_new_appointment", patient.name);
+	Sentry.metrics.set("user_view_new_appointment", patient.name);
 	return (
 		<div className="flex h-screen max-h-screen">
 			<section className="remove-scrollbar container my-auto">
@@ -28,11 +29,10 @@ export default async function NewAppointment({
 						type="create"
 						userId={userId}
 						patientId={patient.$id}
+						setOpen={setOpen} // Pass setOpen here if needed
 					/>
 
-					<p className="copyright mt-10 py-12">
-						Copyright 2024 Carepulse
-					</p>
+					<p className="copyright mt-10 py-12">Copyright 2024 Carepulse</p>
 				</div>
 			</section>
 			<Image
