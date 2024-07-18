@@ -6,10 +6,10 @@ import Image from "next/image";
 import { getPatient } from "@/lib/actions/patient.actions";
 import * as Sentry from "@sentry/nextjs";
 import AppointmentForm from "@/components/forms/AppointmentForm";
+
 export default async function NewAppointment({
 	params: { userId },
-	setOpen, // Accept setOpen as a prop if necessary
-}: SearchParamProps & { setOpen: (open: boolean) => void }) {
+}: SearchParamProps) {
 	const patient = await getPatient(userId);
 
 	Sentry.metrics.set("user_view_new_appointment", patient.name);
@@ -29,7 +29,6 @@ export default async function NewAppointment({
 						type="create"
 						userId={userId}
 						patientId={patient.$id}
-						setOpen={setOpen} // Pass setOpen here if needed
 					/>
 
 					<p className="copyright mt-10 py-12">Copyright 2024 Carepulse</p>
